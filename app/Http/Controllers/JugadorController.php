@@ -2,66 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\jugador;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StorejugadorRequest;
-use App\Http\Requests\UpdatejugadorRequest;
+use App\Models\Jugador;
+use Illuminate\Http\Request;
 
 class JugadorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        $jugadors = Jugador::get();
+        return response()->json($jugadors); 
+    }//CRUD
+    public function destroy($id){
+        $jugador=Jugador::find($id);
+        if($jugador){
+            $jugador->delete();
+            return response()->json('Jugador Eliminado',200);
+        }
+        else
+            return response()->json('No existe el Jugador',409);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function store(Request $request){
+        $jugador=Jugador::create($request->all());
+        return response()->json(($jugador));
     }
+    public function update(Request $request,$id){
+        $jugador=Jugador::find($id);
+        if($jugador){
+            $jugador->update($request->all());
+            return response()->json('Jugador Actualizado',200);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorejugadorRequest $request)
-    {
-        //
+        }
+        else{
+            return response()->json('No existe el Jugador',409);
+        }
+
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(jugador $jugador)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(jugador $jugador)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatejugadorRequest $request, jugador $jugador)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(jugador $jugador)
-    {
-        //
+    public function show($id){
+        $jugador=Jugador::find($id);
+        return response()->json($jugador);
     }
 }

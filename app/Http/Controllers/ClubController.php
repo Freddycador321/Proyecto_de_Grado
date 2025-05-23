@@ -2,66 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\club;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreclubRequest;
-use App\Http\Requests\UpdateclubRequest;
+use App\Models\Club;
+use Illuminate\Http\Request;
 
 class ClubController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        $clubs = Club::get();
+        return response()->json($clubs); 
+    }//CRUD
+    public function destroy($id){
+        $club=Club::find($id);
+        if($club){
+            $club->delete();
+            return response()->json('Club eliminado',200);
+        }
+        else
+            return response()->json('No existe el Club',409);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function store(Request $request){
+        $club=Club::create($request->all());
+        return response()->json(($club));
     }
+    public function update(Request $request,$id){
+        $club=Club::find($id);
+        if($club){
+            $club->update($request->all());
+            return response()->json('Club Actualizado',200);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreclubRequest $request)
-    {
-        //
+        }
+        else{
+            return response()->json('No existe el Club',409);
+        }
+
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(club $club)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(club $club)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateclubRequest $request, club $club)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(club $club)
-    {
-        //
+    public function show($id){
+        $club=Club::find($id);
+        return response()->json($club);
     }
 }

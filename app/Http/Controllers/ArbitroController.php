@@ -2,66 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\arbitro;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StorearbitroRequest;
-use App\Http\Requests\UpdatearbitroRequest;
+use App\Models\Arbitro;
+use Illuminate\Http\Request;
 
 class ArbitroController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        $arbitros = Arbitro::get();
+        return response()->json($arbitros); 
+    }//CRUD
+    public function destroy($id){
+        $arbitro=Arbitro::find($id);
+        if($arbitro){
+            $arbitro->delete();
+            return response()->json('Eliminado Eliminado',200);
+        }
+        else
+            return response()->json('No existe el Arbitro',409);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function store(Request $request){
+        $arbitro=Arbitro::create($request->all());
+        return response()->json(($arbitro));
     }
+    public function update(Request $request,$id){
+        $arbitro=Arbitro::find($id);
+        if($arbitro){
+            $arbitro->update($request->all());
+            return response()->json('Arbitro Actualizado',200);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorearbitroRequest $request)
-    {
-        //
+        }
+        else{
+            return response()->json('No existe el Arbitro',409);
+        }
+
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(arbitro $arbitro)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(arbitro $arbitro)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatearbitroRequest $request, arbitro $arbitro)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(arbitro $arbitro)
-    {
-        //
+    public function show($id){
+        $arbitro=Arbitro::find($id);
+        return response()->json($arbitro);
     }
 }

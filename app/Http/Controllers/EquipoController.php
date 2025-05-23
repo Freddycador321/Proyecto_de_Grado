@@ -2,66 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\equipo;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreequipoRequest;
-use App\Http\Requests\UpdateequipoRequest;
+use App\Models\Equipo;
+use Illuminate\Http\Request;
 
 class EquipoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        $equipos = Equipo::get();
+        return response()->json($equipos); 
+    }//CRUD
+    public function destroy($id){
+        $equipo=Equipo::find($id);
+        if($equipo){
+            $equipo->delete();
+            return response()->json('Equipo Eliminado',200);
+        }
+        else
+            return response()->json('No existe el Equipo',409);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function store(Request $request){
+        $equipo=Equipo::create($request->all());
+        return response()->json(($equipo));
     }
+    public function update(Request $request,$id){
+        $equipo=Equipo::find($id);
+        if($equipo){
+            $equipo->update($request->all());
+            return response()->json('Equipo Actualizado',200);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreequipoRequest $request)
-    {
-        //
+        }
+        else{
+            return response()->json('No existe el Equipo',409);
+        }
+
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(equipo $equipo)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(equipo $equipo)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateequipoRequest $request, equipo $equipo)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(equipo $equipo)
-    {
-        //
+    public function show($id){
+        $equipo=Equipo::find($id);
+        return response()->json($equipo);
     }
 }

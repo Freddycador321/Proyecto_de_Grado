@@ -2,66 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\categoria;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StorecategoriaRequest;
-use App\Http\Requests\UpdatecategoriaRequest;
+use App\Models\Categoria;
+use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        $categorias = Categoria::get();
+        return response()->json($categorias); 
+    }//CRUD
+    public function destroy($id){
+        $categoria=Categoria::find($id);
+        if($categoria){
+            $categoria->delete();
+            return response()->json('Categoria Eliminado',200);
+        }
+        else
+            return response()->json('No existe el Categoria',409);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function store(Request $request){
+        $categoria=Categoria::create($request->all());
+        return response()->json(($categoria));
     }
+    public function update(Request $request,$id){
+        $categoria=Categoria::find($id);
+        if($categoria){
+            $categoria->update($request->all());
+            return response()->json('Categoria Actualizado',200);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorecategoriaRequest $request)
-    {
-        //
+        }
+        else{
+            return response()->json('No existe el Categoria',409);
+        }
+
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(categoria $categoria)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(categoria $categoria)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatecategoriaRequest $request, categoria $categoria)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(categoria $categoria)
-    {
-        //
+    public function show($id){
+        $categoria=Categoria::find($id);
+        return response()->json($categoria);
     }
 }
