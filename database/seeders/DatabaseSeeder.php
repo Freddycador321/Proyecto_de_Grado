@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'username'=>'pepito1234',
             'password'=>'pepito3244',
             'email'=>'pepito2@gmail.com',
-            'acceso'=>'admin'
+            'rol'=>'1'
         ]);
         Club::create([
             'nombre_prop'=>'jaimito',
